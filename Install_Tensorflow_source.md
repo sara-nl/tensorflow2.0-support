@@ -9,8 +9,33 @@ module load Java/1.8.0_152
 module load Python/3.7.0-intel-2018b
 module load hwloc/1.11.10-GCCcore-7.3.0
 ```
+Loading this EasyBuild Python module and our wrappers will set:
+```mpicc``` to ```mpigcc for the Intel(R) MPI Library 2018 Update 3 for Linux*```
+```mpicxx``` to ```mpigxx for the Intel(R) MPI Library 2018 Update 3 for Linux*```
 
-If you are missing the 2018b suite, you can use any other GCC 5+ toolchain. On LISA/Cartesius you can install it with:
+```bash
+module list
+Currently Loaded Modulefiles:
+ 1) libgfortran/32/1(default)                           18) iimpi/2018b                      
+ 2) stdenv/1.3(default)                                 19) imkl/2018.3.222-iimpi-2018b      
+ 3) licenses/1.0(default)                               20) intel/2018b                      
+ 4) oldwheezy/1.0(default)                              21) bzip2/1.0.6-GCCcore-7.3.0        
+ 5) torque/default                                      22) zlib/1.2.11-GCCcore-7.3.0        
+ 6) slurm-tools                                         23) ncurses/6.1-GCCcore-7.3.0        
+ 7) surfsara/1.1(default)                               24) libreadline/7.0-GCCcore-7.3.0    
+ 8) EasyBuild/3.8.0                                     25) Tcl/8.6.8-GCCcore-7.3.0          
+ 9) compilerwrappers                                    26) SQLite/3.24.0-GCCcore-7.3.0      
+10) eb/3.8.0(default)                                   27) XZ/5.2.4-GCCcore-7.3.0           
+11) GCCcore/7.3.0                                       28) GMP/6.1.2-GCCcore-7.3.0          
+12) Java/1.8.0_152                                      29) libffi/3.2.1-GCCcore-7.3.0       
+13) binutils/2.30-GCCcore-7.3.0                         30) Python/3.7.0-intel-2018b         
+14) icc/2018.3.222-GCC-7.3.0-2.30                       31) numactl/2.0.11-GCCcore-7.3.0     
+15) ifort/2018.3.222-GCC-7.3.0-2.30                     32) libxml2/2.9.8-GCCcore-7.3.0      
+16) iccifort/2018.3.222-GCC-7.3.0-2.30                  33) libpciaccess/0.14-GCCcore-7.3.0  
+17) impi/2018.3.222-iccifort-2018.3.222-GCC-7.3.0-2.30  34) hwloc/1.11.10-GCCcore-7.3.0 
+```
+
+If you are missing the 2018b suite, you can use any other GCC 5+ toolchain. On LISA/Cartesius you can install this Python version and all dependencies with:
 ```bash
 module load eb
 eblocalinstall Python-3.7.0-intel-2018b.eb --robot
@@ -106,7 +131,68 @@ pip install keras_applications keras_preprocessing --user
 Please read https://software.intel.com/en-us/articles/intel-optimization-for-tensorflow-installation-guide for more details about CPU options
 
 ```bash
-bazel build --config=mkl --cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0 -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-O3 --copt=-mavx512f --copt=-mavx512pf --copt=-mavx512cd --copt=-mavx512er //tensorflow/tools/pip_package:build_pip_package
+./configure
+```
+
+This is the configure of this wheel:
+```bash
+./configure 
+WARNING: Output base '/home/damian/.cache/bazel/_bazel_damian/9fcb7b127fd29ce682f779e62c1e54f6' is on NFS. This may lead to surprising failures and undetermined behavior.
+WARNING: ignoring _JAVA_OPTIONS in environment.
+WARNING: --batch mode is deprecated. Please instead explicitly shut down your Bazel server using the command "bazel shutdown".
+You have bazel 0.24.0- (@non-git) installed.
+Please specify the location of python. [Default is /home/damian/.local/easybuild/Debian9/software/Python/3.7.0-intel-2018b/bin/python]: 
+
+
+Found possible Python library paths:
+  /home/damian/.local/easybuild/Debian9/software/Python/3.7.0-intel-2018b/lib/python3.7/site-packages
+  /hpc/eb/Debian9/EasyBuild/3.8.0/lib/python2.7/site-packages
+Please input the desired Python library path to use.  Default is [/home/damian/.local/easybuild/Debian9/software/Python/3.7.0-intel-2018b/lib/python3.7/site-packages]
+
+Do you wish to build TensorFlow with XLA JIT support? [Y/n]: 
+XLA JIT support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with OpenCL SYCL support? [y/N]: 
+No OpenCL SYCL support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with ROCm support? [y/N]: 
+No ROCm support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with CUDA support? [y/N]: 
+No CUDA support will be enabled for TensorFlow.
+
+Do you wish to download a fresh release of clang? (Experimental) [y/N]: 
+Clang will not be downloaded.
+
+Do you wish to build TensorFlow with MPI support? [y/N]: 
+No MPI support will be enabled for TensorFlow.
+
+Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native -Wno-sign-compare]: 
+
+
+Would you like to interactively configure ./WORKSPACE for Android builds? [y/N]: 
+Not configuring the WORKSPACE for Android builds.
+
+Preconfigured Bazel build configs. You can use any of the below by adding "--config=<>" to your build command. See .bazelrc for more details.
+	--config=mkl         	# Build with MKL support.
+	--config=monolithic  	# Config for mostly static monolithic build.
+	--config=gdr         	# Build with GDR support.
+	--config=verbs       	# Build with libverbs support.
+	--config=ngraph      	# Build with Intel nGraph support.
+	--config=numa        	# Build with NUMA support.
+	--config=dynamic_kernels	# (Experimental) Build kernels into separate shared objects.
+Preconfigured Bazel build configs to DISABLE default on features:
+	--config=noaws       	# Disable AWS S3 filesystem support.
+	--config=nogcp       	# Disable GCP support.
+	--config=nohdfs      	# Disable HDFS support.
+	--config=noignite    	# Disable Apache Ignite support.
+	--config=nokafka     	# Disable Apache Kafka support.
+	--config=nonccl      	# Disable NVIDIA NCCL support.
+Configuration finished
+```
+Build a wheel for the LISA/Cartesius normal CPU partitions (AVX2 and AVX512). You can build a debug/profiling wheel by adding ```--copt=-g```
+```bash
+bazel build --config=mkl --cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0 -c opt --copt=-mavx2 --copt=-mfma --copt=-O3 --copt=-mavx512f --config=numa --config=noaws --config=nogcp --config=nohdfs --config=noignite --config=nokafka --config=nonccl //tensorflow/tools/pip_package:build_pip_package 
 ```
 
 ### Install the wheel in your current Python environment
