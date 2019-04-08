@@ -92,9 +92,14 @@ name '_INCLUDE_PRIVATE_HWLOC_AUTOIGEN_CONFIG_H_CUDA_SUBS' is not defined
 ```
 
 Solution:
-
 ```bash
 git cherry-pick 21425b41215989956acc3b06cee506e9c6ac57f0
+```
+
+### Install Python depencies in your current environment
+```bash
+pip install pip six numpy wheel setuptools mock --user
+pip install keras_applications keras_preprocessing --user
 ```
 
 ### Build the TF2.0 Python wheel
@@ -105,7 +110,8 @@ bazel build --config=mkl --cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0 -c opt --copt=-mavx
 ```
 
 ### Install the wheel in your current Python environment
+Unless set otherwise, Bazel writes in ```~/.cache/bazel/```. In my case it was ```~/.cache/bazel/_bazel_damian/9fcb7b127fd29ce682f779e62c1e54f6```. Please insert your local path before running the package building commands
 ```bash
-./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag /tmp/tensorflow_pkg
-pip install /tmp/tensorflow_pkg/tensorflow-2-0.whl
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag ${HOME}/.cache/bazel/_bazel_damian/9fcb7b127fd29ce682f779e62c1e54f6
+pip install ${HOME}/.cache/bazel/_bazel_damian/9fcb7b127fd29ce682f779e62c1e54f6/tf_nightly-2.0.0a0-cp37-cp37m-linux_x86_64.whl --user --force-reinstall
 ```
