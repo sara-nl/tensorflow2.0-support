@@ -7,7 +7,7 @@ In its current nightly phase, it might be better to build the CPU-only wheel fro
 
 The *debug* wheel can be downloaded directly from here https://surfdrive.surf.nl/files/index.php/s/xLEAkI7bf5kANc6/download.
 
-The *production* wheel can be downloaded directly from here https://surfdrive.surf.nl/files/index.php/s/uWoYlDt3b9BOZrn/download.
+The *production* wheel can be downloaded directly from here https://surfdrive.surf.nl/files/index.php/s/rf5I0RIM8ku15UA/download.
 
 ### LISA/Cartesius GPU
 ```bash
