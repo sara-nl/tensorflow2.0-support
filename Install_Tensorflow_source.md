@@ -1,4 +1,6 @@
-This guide gives the steps to build Tensorflow 2.0 for the CPU partitions on LISA/Cartesius. It can be reused for other systems.
+This gives the steps to build Tensorflow 2.0 for the CPU partitions on LISA/Cartesius. It can be reused for other systems.
+
+If all steps are followed in sequence, you should be able to obtain a working Tensoflow installation. If needed, remember to add the ```-g``` flag to the ```bazel build``` step. This is tested for Python 3.7, however it should work the same for any Python 2.7 stack.
 
 # Load pre-requisites
 ```bash 
@@ -63,7 +65,9 @@ export PATH=${HOME}/install/bin:$PATH
 Tensorflow 2.0 home: https://github.com/tensorflow/tensorflow/tree/r2.0
 
 Official build howto: https://www.tensorflow.org/install/source
+
 Intel build howto: https://software.intel.com/en-us/articles/intel-optimization-for-tensorflow-installation-guide
+
 
 ```bash 
 git clone https://github.com/tensorflow/tensorflow.git
@@ -93,6 +97,15 @@ Solution:
 git cherry-pick 21425b41215989956acc3b06cee506e9c6ac57f0
 ```
 
+### Build the TF2.0 Python wheel
+Please read https://software.intel.com/en-us/articles/intel-optimization-for-tensorflow-installation-guide for more details about CPU options
 
+```bash
+bazel build --config=mkl --cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0 -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-O3 --copt=-mavx512f --copt=-mavx512pf --copt=-mavx512cd --copt=-mavx512er //tensorflow/tools/pip_package:build_pip_package
+```
 
-
+### Install the wheel in your current Python environment
+```bash
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag /tmp/tensorflow_pkg
+pip install /tmp/tensorflow_pkg/tensorflow-2-0.whl
+```
