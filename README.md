@@ -12,7 +12,7 @@ The *non-debug* wheel can be downloaded directly from here https://surfdrive.sur
 ### LISA/Cartesius GPU
 ```bash
 module load Python/3.6.3-foss-2017b
-module load cuDNN/7.3.1-CUDA-10.0.130 
+module load cuDNN/7.4.2-CUDA-10.0.130 
 module load NCCL/2.3.5-CUDA-10.0.130
 pip install tensorflow-gpu==2.0.0-alpha0 --user
 ```
